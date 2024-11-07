@@ -1,22 +1,34 @@
+import { Pokemon, usePokemonSprite } from '@/hooks/pokemonHooks'
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 
 interface IHomeRowProps {
-    item: string
+    item: Pokemon
 }
 
 const HomeRow = ({ item }: IHomeRowProps) => {
-  return (
-    <View style={styles.card} key={item}>
-        <Image
-            style={styles.tinyLogo}
-            source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-        />
-    <Text style={styles.cardText}>{item}</Text>
-    </View>
-  )
+    const { error, isLoading, sprite} = usePokemonSprite(item.url)
+
+    return (
+        <View style={styles.card} key={item.name}>
+            {
+                isLoading ? (
+                    <ActivityIndicator style={styles.tinyLogo}/>
+                ) : error ? (
+                    <Text>Error</Text>
+                ) : sprite && (
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{
+                            uri: sprite
+                        }}
+                    />
+                )
+            }
+            
+        <Text style={styles.cardText}>{item.name}</Text>
+        </View>
+    )
 }
 
 export default HomeRow

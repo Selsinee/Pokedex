@@ -1,36 +1,28 @@
 import FloatingActionButton from "@/components/FloatingActionButton";
 import HomeRow from "@/components/HomeRow";
-import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { usePokemons } from "@/hooks/pokemonHooks";
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const [data, setData] = useState([
-    'bulbasaur',
-    'ivysaur',
-    'venusaur',
-    'charmander',
-    'charmeleon',
-    'charizard',
-    'squirtle',
-    'wartortle',
-    'blastoise',
-    'caterpie',
-    'metapod',
-  ])
-
-  const addPokemon = () => {
-    setData((prev) => [...prev, 'raticate'])
-  }
+  const { error, isLoading, pokemons, loadMore } = usePokemons()
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <HomeRow item={item}/>
-        )}
-      />
-      <FloatingActionButton onPress={addPokemon}/>
+      {
+        isLoading ? (
+          <ActivityIndicator size={'large'}/>
+        ) : error ? (
+          <Text>Error!</Text>
+        ) : pokemons && (
+          <FlatList
+            data={pokemons}
+            renderItem={({ item }) => (
+              <HomeRow item={item}/>
+            )}
+        />
+        )
+      }
+      <FloatingActionButton onPress={loadMore}/>
     </View>
   );
 }
