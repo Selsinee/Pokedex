@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const [data, setData] = useState([
@@ -22,10 +21,7 @@ export default function Index() {
   }
   
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Pokedex</Text>
-      </View>
+    <View style={styles.container}>
       <FlatList
         data={data}
         renderItem={({ item }) => (
@@ -43,7 +39,7 @@ export default function Index() {
       <TouchableOpacity style={styles.fab} onPress={addPokemon}>
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -51,14 +47,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16
-  },
-  header: {
-    padding: 8,
-  },
-  headerText: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 24,
   },
   card: {
     borderRadius: 8,
