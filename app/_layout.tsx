@@ -1,14 +1,30 @@
-import { Stack } from "expo-router";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { Tabs } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{
-        headerTitle: "Pokedex"
-      }}/>
-      <Stack.Screen name="detail/[url]" options={{
-        headerTitle: 'Detail'
-      }}/>
-    </Stack>
+    <Tabs
+    screenOptions={{
+      headerShown: false,
+    }}>
+      <Tabs.Screen
+        name="(home)"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(favorite)"
+        options={{
+          title: 'Favorite',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
