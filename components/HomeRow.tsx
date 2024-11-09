@@ -1,34 +1,36 @@
-import { Pokemon, usePokemonSprite } from '@/hooks/pokemonHooks'
-import React from 'react'
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
+import { Pokemon, usePokemonSprite } from '@/hooks/pokemonHooks';
+import { Link } from 'expo-router';
+import React from 'react';
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text } from 'react-native';
 
 interface IHomeRowProps {
-    item: Pokemon
+  item: Pokemon
 }
 
 const HomeRow = ({ item }: IHomeRowProps) => {
-    const { error, isLoading, sprite} = usePokemonSprite(item.url)
+  const { error, isLoading, sprite} = usePokemonSprite(item.url)
 
-    return (
-        <View style={styles.card} key={item.name}>
-            {
-                isLoading ? (
-                    <ActivityIndicator style={styles.tinyLogo}/>
-                ) : error ? (
-                    <Text>Error</Text>
-                ) : sprite && (
-                    <Image
-                        style={styles.tinyLogo}
-                        source={{
-                            uri: sprite
-                        }}
-                    />
-                )
-            }
-            
+  return (
+    <Link key={item.name} href={{ pathname: '/detail/[url]', params: { url: item.url } }} asChild>
+      <Pressable style={styles.card}>
+        {
+          isLoading ? (
+            <ActivityIndicator style={styles.tinyLogo}/>
+          ) : error ? (
+            <Text>Error</Text>
+          ) : sprite && (
+            <Image
+              style={styles.tinyLogo}
+              source={{
+                  uri: sprite
+              }}
+            />
+          )
+        }
         <Text style={styles.cardText}>{item.name}</Text>
-        </View>
-    )
+      </Pressable>
+    </Link>
+  )
 }
 
 export default HomeRow

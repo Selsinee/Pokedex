@@ -6,6 +6,9 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{
         headerTitle: "Pokedex"
       }}/>
+      <Stack.Screen name="detail/[url]" options={{
+        headerTitle: 'Detail'
+      }}/>
     </Stack>
   );
 }
