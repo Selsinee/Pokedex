@@ -19,7 +19,7 @@ export default function Index() {
             renderItem={({ item }) => (
               <HomeRow item={item}/>
             )}
-        />
+          />
         )
       }
       <FloatingActionButton onPress={loadMore}/>
