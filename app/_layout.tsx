@@ -13,9 +13,16 @@ export default function RootLayout() {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <Tabs
-          screenOptions={{
-            headerShown: false,
-          }}>
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Tabs.Screen
+              name="index"
+              options={{
+                href: null,
+              }}
+            />
             <Tabs.Screen
               name="(home)"
               options={{
