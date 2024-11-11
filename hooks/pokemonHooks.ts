@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useApi } from "./useApi";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getPokeApi, useApi } from "./useApi";
 
 type PokemonResponse = {
   count: number;
@@ -46,13 +46,23 @@ type Type = {
 }
 
 export const usePokemons = () => {
-  const [limit, setLimit] = useState(20)
-  const { error, isLoading, data } = useApi<PokemonResponse>(`pokemon?limit=${limit}`, ['pokemons', limit])
+  const { isError: error, isLoading, data, fetchNextPage } = useInfiniteQuery({
+    initialPageParam: '',
+    queryKey: ['pokemons'],
+    queryFn: async ({ pageParam }) => {
+      if (pageParam === '') {
+        return await getPokeApi<PokemonResponse>(`pokemon?limit=20`);
+      } else {
+        return await getPokeApi<PokemonResponse>(pageParam);
+      }
+    },
+    getNextPageParam: (lastPage, _pages) => lastPage.next,
+  });
   const loadMore = () => {
-      setLimit((prev) => prev + 20)
-  }
+    fetchNextPage();
+  };
 
-  return { error, isLoading, pokemons: data?.results, loadMore }
+  return { error, isLoading, pokemons: data?.pages.flatMap(d => d.results), loadMore };
 }
 
 export const usePokemonDetail = (url: string) => {
