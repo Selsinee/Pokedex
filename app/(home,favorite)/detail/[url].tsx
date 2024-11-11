@@ -1,6 +1,3 @@
-import DetailRow from '@/components/DetailRow';
-import { usePokemonDetail } from '@/hooks/pokemonHooks';
-import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -9,16 +6,47 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import DetailRow from '@/components/DetailRow';
+import { Pokemon, usePokemonDetail } from '@/hooks/pokemonHooks';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useAppDispatch, useAppSelector } from '@/redux';
+import { add, remove, selectFavorites } from '@/redux/favoriteSlice';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+
+type DetailParam = { url: string }
 
 const Detail = () => {
-  const { url } = useLocalSearchParams<'/detail/[url]'>();
+  const { url } = useLocalSearchParams<DetailParam>();
 
   const { isLoading, error, detail } = usePokemonDetail(url);
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(selectFavorites);
+  const isFavorite = favorites.filter(f => f.url === url).length === 1;
+  const pokemon: Pokemon = { name: detail?.name ?? "", url }
 
   return (
     <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() =>
+                isFavorite ? dispatch(remove(pokemon)) : dispatch(add(pokemon))
+              }
+            >
+              {isFavorite ? (
+                <TabBarIcon name='heart' />
+              ) : (
+                <TabBarIcon name='heart-outline' />
+              )}
+            </TouchableOpacity>
+          ),
+          title: 'Detail',
+        }}
+      />
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" />
