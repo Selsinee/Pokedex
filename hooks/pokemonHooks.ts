@@ -47,7 +47,7 @@ type Type = {
 
 export const usePokemons = () => {
   const [limit, setLimit] = useState(20)
-  const { error, isLoading, data } = useApi<PokemonResponse>(`pokemon?limit=${limit}`)
+  const { error, isLoading, data } = useApi<PokemonResponse>(`pokemon?limit=${limit}`, ['pokemons', limit])
   const loadMore = () => {
       setLimit((prev) => prev + 20)
   }
@@ -56,7 +56,7 @@ export const usePokemons = () => {
 }
 
 export const usePokemonDetail = (url: string) => {
-  const { error, isLoading, data } = useApi<PokemonDetail>(url)
+  const { error, isLoading, data } = useApi<PokemonDetail>(url, [url])
 
   return { error, isLoading, detail: data }
 }
