@@ -2,10 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
+import { favoriteCountSlice } from './favoriteCountSlice';
 import { favoriteSlice } from './favoriteSlice';
 
 const rootReducer = combineReducers({
   favorite: favoriteSlice.reducer,
+  favoriteCount: favoriteCountSlice.reducer,
 });
 
 const persistedReducer = persistReducer(

@@ -13,7 +13,7 @@ export type Pokemon = {
   url: string
 }
 
-type PokemonDetail = {
+export type PokemonDetail = {
   abilities: Ability[];
   base_experience: number;
   height: number;
